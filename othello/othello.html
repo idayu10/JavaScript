@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Othello JS</title>
+    <link href="othello.css" rel="stylesheet">
+  </head>
+  <body onload="init()">
+    <div id="main" class="container">
+      <div id="game-board"></div>
+      <div id="current-player">Current player: <span id="current-player-name">-</span></div>
+        <form id="settigs">
+          <p>黒</p>
+          <select name="black">
+            <option value="human">human</option>
+            <option value="cpu1">CPU1</option>
+          </select>
+          <p>白</p>
+          <select name="white">
+            <option value="human">human</option>
+            <option value="cpu1">CPU1</option>
+          </select>
+          </br>
+          <button type="button" name="start" onclick="btnPushed(this)">開始</button>
+        </form>
+      <div id="message"></div>
+      <div id="console"></div>
+    </div>
+
+    <script src="othello.js"></script>
+  </body>
+</html>
