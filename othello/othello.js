@@ -430,8 +430,8 @@ function doCpuVsCpu(){
 
 function putCpu1(){
     var coordinates =[];
-    for(var i = 1; i < BOARD_X+1; i++){
-        for(var j = 1; j < BOARD_Y+1; j++){
+    for(var i = 1; i < BOARD_Y+1; i++){
+        for(var j = 1; j < BOARD_X+1; j++){
             if(canPut(i,j,false,null)){
                 var coordinate = {x:i,y:j};
                 coordinates.push(coordinate);
@@ -462,8 +462,8 @@ function putCpu2(){
     weight.push([-99,-99,-99,-99,-99,-99,-99,-99,-99,-99]);
 
     var coordinates =[];
-    for(var i = 1; i < BOARD_X+1; i++){
-        for(var j = 1; j < BOARD_Y+1; j++){
+    for(var i = 1; i < BOARD_Y+1; i++){
+        for(var j = 1; j < BOARD_X+1; j++){
             if(canPut(i,j,false,null)){
                 var coordinate = {x:i,y:j};
                 coordinates.push(coordinate);
@@ -494,4 +494,97 @@ function putCpu2(){
     drawStones();
     showArea();
     countStones();
+}
+
+function putCpu3(){
+    var weight = [];
+    weight.push([-99,-99,-99,-99,-99,-99,-99,-99,-99,-99]);
+    weight.push([-99,30,-12,0,-1,-1,0,-12,30,-99]);
+    weight.push([-99,-12,-15,-3,-3,-3,-3,-15,-12,-99]);
+    weight.push([-99,0,-3,0,-1,-1,-0,-3,0,-99]);
+    weight.push([-99,-1,-3,-1,-1,-1,-1,-3,-1,-99]);
+    weight.push([-99,-1,-3,-1,-1,-1,-1,-3,-1,-99]);
+    weight.push([-99,0,-3,0,-1,-1,-0,-3,0,-99]);
+    weight.push([-99,-12,-15,-3,-3,-3,-3,-15,-12,-99]);
+    weight.push([-99,30,-12,0,-1,-1,0,-12,30,-99]);
+    weight.push([-99,-99,-99,-99,-99,-99,-99,-99,-99,-99]);
+
+    var coordinates =[];
+    for(var i = 1; i < BOARD_Y+1; i++){
+        for(var j = 1; j < BOARD_X+1; j++){
+            if(canPut(i,j,false,null)){
+                var coordinate = {x:i,y:j};
+                coordinates.push(coordinate);
+            }
+        }
+    }
+
+    var virtualBoard = [];
+    var maxParam = -999;
+    var maxCoodinate;
+
+    for(var tmp of coordinates){
+        //ボードのコピー
+        for(var i = 0; i < boardG.length; i++){
+            virtualBoard[i] = boardG[i].slice();
+        }
+
+        canPut(tmp.x,tmp.y,true,virtualBoard);
+        switchColor();
+
+        var coordinatesEnemy =[];
+        for(var i = 1; i < BOARD_Y+1; i++){
+            for(var j = 1; j < BOARD_X+1; j++){
+                if(canPut(i,j,false,virtualBoard)){
+                    var coordinateEnemy = {x:i,y:j};
+                    coordinatesEnemy.push(coordinateEnemy);
+                }
+            }
+        }
+
+        var enemyWeightNum = 0;
+        var virtualBoard2 = [];
+        var stoneEnemyCanPut = 0;
+
+        for(var enemyTmp of coordinatesEnemy){
+            enemyWeightNum = enemyWeightNum + weight[enemyTmp.y][enemyTmp.x];
+
+            for(var i = 0; i < virtualBoard.length; i++){
+                virtualBoard2[i] = virtualBoard[i].slice();
+            }
+            var stoneBefore = countMyStone(virtualBoard2);
+            canPut(enemyTmp.x,enemyTmp.y,true,virtualBoard2);
+            var stoneAfter = countMyStone(virtualBoard2);
+            stoneEnemyCanPut = stoneEnemyCanPut + stoneAfter - stoneBefore;
+        }
+
+        var param = weight[tmp.y][tmp.x] - enemyWeightNum - coordinatesEnemy.length - stoneEnemyCanPut;
+
+        if(maxParam < param){
+            maxParam = param;
+            maxCoodinate = tmp;
+        }
+
+        switchColor();
+    }
+
+    canPut(maxCoodinate.x,maxCoodinate.y,true,null);
+
+    switchColor();
+    drawStones();
+    showArea();
+    countStones();
+}
+
+function countMyStone(board){
+    var count = 0;
+    for(var i = 1; i < BOARD_Y+1; i++){
+        for(var j = 1; j < BOARD_X+1; j++){
+            if(board[i][j] == player){
+                count++;
+            }
+        }
+    }
+
+    return count;
 }
