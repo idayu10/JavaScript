@@ -9,16 +9,26 @@
     <div id="main" class="container">
       <div id="game-board"></div>
       <div id="current-player">Current player: <span id="current-player-name">-</span></div>
+      黒：<span id="blackStone">-</span>　白：<span id="whiteStone">-</span>
         <form id="settigs">
-          <p>黒</p>
+          黒：
           <select name="black">
             <option value="human">human</option>
             <option value="cpu1">CPU1</option>
+            <option value="cpu2">CPU2</option>
+            <!-- <option value="cpu3">CPU3</option> -->
+            <!-- <option value="cpu4">CPU4</option> -->
+            <!-- <option value="cpu5">CPU5</option> -->
           </select>
-          <p>白</p>
+          <br>
+          白：
           <select name="white">
             <option value="human">human</option>
             <option value="cpu1">CPU1</option>
+            <option value="cpu2">CPU2</option>
+            <!-- <option value="cpu3">CPU3</option> -->
+            <!-- <option value="cpu4">CPU4</option> -->
+            <!-- <option value="cpu5">CPU5</option> -->
           </select>
           </br>
           <button type="button" name="start" onclick="btnPushed(this)">開始</button>
